@@ -18,13 +18,6 @@ parent:
   id: java-springboot
   registryUrl: 'https://registry.devfile.io'
 components:
-  - name: image-build
-    image:
-      imageName: java-springboot-image:latest
-      dockerfile:
-        uri: docker/Dockerfile
-        buildContext: .
-        rootRequired: false
   - name: kubernetes-deploy
     attributes:
       deployment/replicas: 1
@@ -40,16 +33,12 @@ components:
           targetPort: 8081
           path: /
 commands:
-  - id: build-image
-    apply:
-      component: image-build
   - id: deployk8s
     apply:
       component: kubernetes-deploy
   - id: deploy
     composite:
       commands:
-        - build-image
         - deployk8s
       group:
         kind: deploy
